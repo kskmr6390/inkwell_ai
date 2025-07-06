@@ -4,7 +4,7 @@ import sys
 # Add the src directory to the Python path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from inkwell_ai.utils.logger import get_logger
+from utils.logger import get_logger
 
 # Get logger for this module
 logger = get_logger("test_write_task")
@@ -38,7 +38,7 @@ def run_tests():
             
         try:
             # Load the tasks configuration
-            tasks_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'inkwell_ai', 'config', 'tasks.yaml')
+            tasks_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'config', 'tasks.yaml')
             with open(tasks_file, 'r') as f:
                 tasks_config = yaml.safe_load(f)
             
@@ -72,7 +72,7 @@ def run_tests():
             
         try:
             # Load the agents configuration
-            agents_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'inkwell_ai', 'config', 'agents.yaml')
+            agents_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'config', 'agents.yaml')
             with open(agents_file, 'r') as f:
                 agents_config = yaml.safe_load(f)
             
@@ -107,7 +107,7 @@ def run_tests():
             
         try:
             # Load the agents configuration
-            agents_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'inkwell_ai', 'config', 'agents.yaml')
+            agents_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'config', 'agents.yaml')
             with open(agents_file, 'r') as f:
                 agents_config = yaml.safe_load(f)
             
@@ -139,7 +139,7 @@ def run_tests():
             
         try:
             # Load the tasks configuration
-            tasks_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'inkwell_ai', 'config', 'tasks.yaml')
+            tasks_file = os.path.join(os.path.dirname(__file__), '..', 'src', 'config', 'tasks.yaml')
             with open(tasks_file, 'r') as f:
                 tasks_config = yaml.safe_load(f)
             
