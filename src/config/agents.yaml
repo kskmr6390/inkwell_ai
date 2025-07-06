@@ -27,4 +27,3 @@ editor:
     You're a seasoned content editor with a knack for editing content for the blog post. Known for your ability to edit content for the blog post, you're known for your ability to edit content for the blog post.
   allow_delegation: false
   verbose: true
-Transform: AWS::Serverless-2016-10-31

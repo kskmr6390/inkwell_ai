@@ -4,7 +4,7 @@ import warnings
 
 from datetime import datetime
 
-from crew import InkwellAi
+from src.crew import InkwellAi
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
