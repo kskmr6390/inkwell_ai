@@ -1,0 +1,25 @@
+
+plan_task:
+  description: >
+    Plan the content for the blog post.
+  expected_output: >
+    A list of topics to cover in the blog post.
+  agent: planner
+
+write_task:
+  description: >
+    Write the content for the blog post.
+  expected_output: >
+    A fully fleshed out blog post with the main topics, each with a full section of information.
+  agent: writer
+  expected_output_file: blog_post.md
+
+edit_task:
+  description: >
+    Edit the content for the blog post.
+  expected_output: >
+    A fully fleshed out blog post with the main topics, each with a full section of information.
+  agent: editor
+  expected_output_file: blog_post.md
+
+

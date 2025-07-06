@@ -1,0 +1,11 @@
+# Core dependencies for inkwell_ai project
+crewai[tools]>=0.140.0,<1.0.0
+
+# YAML processing
+PyYAML>=6.0.0
+
+# Testing dependencies
+pytest>=8.4.0
+
+# Logging and utilities
+pathlib2>=2.3.0; python_version<"3.4" 
