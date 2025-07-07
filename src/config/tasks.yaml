@@ -22,4 +22,12 @@ edit_task:
   agent: editor
   expected_output_file: blog_post.md
 
+post_to_dev_task:
+  description: >
+    Post the content to dev.to.
+  expected_output: >
+    A message confirming that the content has been posted to dev.to.
+  agent: dev_poster
+  expected_output_file: dev_to_post_result.md
+
 

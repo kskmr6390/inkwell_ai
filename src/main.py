@@ -18,7 +18,7 @@ def run():
     This will execute the planner, writer, and editor tasks sequentially.
     """
     inputs = {
-        'topic': 'AI LLMs',
+        'topic': 'The Rise of Agentic AI: What It Means for Developers and Businesses',
         'current_year': str(datetime.now().year)
     }
     

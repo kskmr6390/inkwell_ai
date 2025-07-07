@@ -2,6 +2,8 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+from src.tools.custom_tool import DevToPostTool
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -11,10 +13,11 @@ class InkwellAi():
     """
     InkwellAi crew for creating blog content.
     
-    This crew consists of three agents:
+    This crew consists of four agents:
     - Planner: Creates content plans and outlines
     - Writer: Writes engaging content based on the plan
     - Editor: Reviews and refines the content
+    - Dev Poster: Publishes the final article to dev.to
     """
 
     agents: List[BaseAgent]
@@ -45,6 +48,13 @@ class InkwellAi():
             config=self.agents_config['editor'], # type: ignore[index]
             verbose=True
         )
+    @agent
+    def dev_poster(self) -> Agent:
+        return Agent(
+            config=self.agents_config['dev_poster'], # type: ignore[index]
+            verbose=True,
+            tools=[DevToPostTool()]
+        )
 
     # To learn more about structured task outputs,
     # task dependencies, and task callbacks, check out the documentation:
@@ -69,6 +79,13 @@ class InkwellAi():
             output_file='blog_post.md'
         )
 
+    @task
+    def post_to_dev_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['post_to_dev_task'], # type: ignore[index]
+            output_file='devto_post_result.md' 
+        )
+
     @crew
     def crew(self) -> Crew:
         """
@@ -78,6 +95,7 @@ class InkwellAi():
         1. Planner creates content outline
         2. Writer creates content based on outline
         3. Editor reviews and refines content
+        4. Dev Poster publishes the article to dev.to
         
         Returns:
             Configured Crew instance
