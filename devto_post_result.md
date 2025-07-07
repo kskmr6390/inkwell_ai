@@ -1,3 +1,5 @@
-The markdown content of the blog post appears to be well-formatted and ready for publishing. The tags pulled from the content indicate that this post relates to topics of artificial intelligence, machine learning, software and hardware efficiency, language models, and economics, particularly the cost implications of using large language models in AI. As such, these themes should be represented in the tags for the Dev.to post to ensure that it reaches the appropriate audience. 
+Article published successfully!
 
-I'll use the DevToPostTool to publish this content to Dev.to, providing the final markdown content, indicating for the post to be published immediately, and including the tags '#ai', '#machinelearning', '#llm', '#economics', '#optmization', and '#hardware'. Let's proceed.
+Title: Agentic AI in Healthcare
+Tags: ai, machinelearning, healthcare, agenticai
+Dev.to Post URL: [Agentic AI in Healthcare](https://dev.to/satyam_chourasiya_99ea2e4/agentic-ai-in-healthcare-3bb9)
