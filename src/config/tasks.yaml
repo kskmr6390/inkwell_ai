@@ -1,8 +1,9 @@
 plan_task:
   description: >
-    Analyze the blog topic and create a comprehensive content outline optimized for clarity, SEO, and reader engagement. 
-    Identify the main sections and subtopics, recommend headings (H2/H3), relevant data points or trends, and visual elements (e.g., charts, diagrams, tables).
-    Suggest tone (e.g., educational, conversational, thought-leader) and include references or expert sources if applicable.
+    Analyze the blog topic and create a comprehensive content outline optimized for clarity, SEO, and reader engagement.
+    Identify the main sections and subtopics, recommend headings (H2/H3), relevant data points or trends, and table ideas
+    (e.g., '[TABLE: LLM size vs inference cost]').
+    Suggest tone (e.g., educational, conversational, thought‑leader) and include references or expert sources if applicable.
   expected_output: >
     A structured outline including:
     - Section titles (H2/H3)
@@ -12,13 +13,14 @@ plan_task:
 
 write_task:
   description: >
-    Using the planner’s outline, write a complete, insightful, and SEO-optimized blog post. 
-    The content should be factual, well-cited, clearly structured, and include placeholders for visuals (e.g., [CHART:], [IMAGE:], [DIAGRAM:]).
-    Use markdown formatting with H2/H3 headings, bullet lists, quotes, tables, and callout blocks.
+    Using the planner’s outline, write a complete, insightful, and SEO‑optimized blog post.
+    The content should be factual, well‑cited, clearly structured, and include placeholders for tables only
+    (e.g., [TABLE: …]).
+    Use markdown formatting with H2/H3 headings, bullet lists, quotes, and tables.
   expected_output: >
-    A full markdown-formatted blog post with:
+    A full markdown‑formatted blog post with:
     - Engaging introduction
-    - Clear, structured sections (## and ### headings)
+    - Clear, structured sections ('##' and '###' headings)
     - Data, examples, expert references
     - Summary or CTA in the conclusion
   agent: writer
@@ -26,31 +28,31 @@ write_task:
 
 edit_task:
   description: >
-    Refine the draft blog post for clarity, grammar, narrative flow, and visual coherence. 
-    Ensure consistency in tone and formatting, finalize the markdown, and embed proper visual tags (e.g., `![alt text](images/chart.png)`).
-    Validate data integrity and enhance scannability with proper use of headings, lists, and quotes. Optimize for SEO and readability.
+    Refine the draft blog post for clarity, grammar, narrative flow, and structural coherence.
+    Ensure consistency in tone and formatting, finalize the markdown, and embed proper table syntax.
+    Validate data integrity and enhance scannability with headings, lists, quotes, and tables. Optimize for SEO and readability.
   expected_output: >
-    A final publication-ready blog post that:
+    A final publication‑ready blog post that:
     - Uses clean markdown syntax
-    - Embeds charts/images/diagrams in correct places
+    - Embeds tables in the correct places (no images or charts)
     - Maintains consistent tone and structure
-    - Includes finalized H1-H3 structure, metadata-ready intro and outro
+    - Includes finalized H1–H3 hierarchy, metadata‑ready intro and outro
   agent: editor
   expected_output_file: blog_post.md
 
 post_to_dev_task:
   description: >
-    Publish the final markdown blog post to Dev.to using the Dev.to API. 
+    Publish the final markdown blog post to Dev.to via the Dev.to API.
     Ensure that:
-    - All markdown formatting renders correctly (including code blocks, lists, embedded images)
+    - All markdown formatting renders correctly (including code blocks, lists, and tables)
     - Relevant tags are included (#ai, #machinelearning, #opensource, etc.)
-    - A cover image and meta description are applied
-    - The canonical URL is optionally set
+    - A meta description and optional canonical URL are applied
     - The post is validated for rendering issues and a success confirmation with URL is returned
   expected_output: >
     A confirmation markdown file containing:
     - The Dev.to post URL
     - A publication status message
-    - Any metadata used (title, tags, cover image, canonical URL)
+    - Any metadata used (title, tags, canonical URL)
   agent: dev_poster
   expected_output_file: dev_to_post_result.md
+

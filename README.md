@@ -20,12 +20,12 @@ crewai install
 ```
 ### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+**Add your 'OPENAI_API_KEY' into the '.env' file**
 
-- Modify `src/inkwell_ai/config/agents.yaml` to define your agents
-- Modify `src/inkwell_ai/config/tasks.yaml` to define your tasks
-- Modify `src/inkwell_ai/crew.py` to add your own logic, tools and specific args
-- Modify `src/inkwell_ai/main.py` to add custom inputs for your agents and tasks
+- Modify 'src/inkwell_ai/config/agents.yaml' to define your agents
+- Modify 'src/inkwell_ai/config/tasks.yaml' to define your tasks
+- Modify 'src/inkwell_ai/crew.py' to add your own logic, tools and specific args
+- Modify 'src/inkwell_ai/main.py' to add custom inputs for your agents and tasks
 
 ## Running the Project
 
@@ -37,7 +37,7 @@ $ crewai run
 
 This command initializes the inkwell_ai Crew, assembling the agents and assigning them tasks as defined in your configuration.
 
-This example, unmodified, will create a `blog_post.md` file with content about AI LLMs in the root folder.
+This example, unmodified, will create a 'blog_post.md' file with content about AI LLMs in the root folder.
 
 ## Understanding Your Crew
 
@@ -47,7 +47,7 @@ The inkwell_ai Crew is composed of three AI agents working together to create bl
 2. **Writer Agent**: Writes engaging and factual content based on the plan
 3. **Editor Agent**: Reviews and refines the content for quality and clarity
 
-These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+These agents collaborate on a series of tasks, defined in 'config/tasks.yaml', leveraging their collective skills to achieve complex objectives. The 'config/agents.yaml' file outlines the capabilities and configurations of each agent in your crew.
 
 ## Testing
 
