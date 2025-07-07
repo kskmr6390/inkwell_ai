@@ -1,33 +1,56 @@
-
 plan_task:
   description: >
-    Plan the content for the blog post.
+    Analyze the blog topic and create a comprehensive content outline optimized for clarity, SEO, and reader engagement. 
+    Identify the main sections and subtopics, recommend headings (H2/H3), relevant data points or trends, and visual elements (e.g., charts, diagrams, tables).
+    Suggest tone (e.g., educational, conversational, thought-leader) and include references or expert sources if applicable.
   expected_output: >
-    A list of topics to cover in the blog post.
+    A structured outline including:
+    - Section titles (H2/H3)
+    - Brief content notes per section
+    - Tone/style notes and any suggested references
   agent: planner
 
 write_task:
   description: >
-    Write the content for the blog post.
+    Using the planner’s outline, write a complete, insightful, and SEO-optimized blog post. 
+    The content should be factual, well-cited, clearly structured, and include placeholders for visuals (e.g., [CHART:], [IMAGE:], [DIAGRAM:]).
+    Use markdown formatting with H2/H3 headings, bullet lists, quotes, tables, and callout blocks.
   expected_output: >
-    A fully fleshed out blog post with the main topics, each with a full section of information.
+    A full markdown-formatted blog post with:
+    - Engaging introduction
+    - Clear, structured sections (## and ### headings)
+    - Data, examples, expert references
+    - Summary or CTA in the conclusion
   agent: writer
   expected_output_file: blog_post.md
 
 edit_task:
   description: >
-    Edit the content for the blog post.
+    Refine the draft blog post for clarity, grammar, narrative flow, and visual coherence. 
+    Ensure consistency in tone and formatting, finalize the markdown, and embed proper visual tags (e.g., `![alt text](images/chart.png)`).
+    Validate data integrity and enhance scannability with proper use of headings, lists, and quotes. Optimize for SEO and readability.
   expected_output: >
-    A fully fleshed out blog post with the main topics, each with a full section of information.
+    A final publication-ready blog post that:
+    - Uses clean markdown syntax
+    - Embeds charts/images/diagrams in correct places
+    - Maintains consistent tone and structure
+    - Includes finalized H1-H3 structure, metadata-ready intro and outro
   agent: editor
   expected_output_file: blog_post.md
 
 post_to_dev_task:
   description: >
-    Post the content to dev.to.
+    Publish the final markdown blog post to Dev.to using the Dev.to API. 
+    Ensure that:
+    - All markdown formatting renders correctly (including code blocks, lists, embedded images)
+    - Relevant tags are included (#ai, #machinelearning, #opensource, etc.)
+    - A cover image and meta description are applied
+    - The canonical URL is optionally set
+    - The post is validated for rendering issues and a success confirmation with URL is returned
   expected_output: >
-    A message confirming that the content has been posted to dev.to.
+    A confirmation markdown file containing:
+    - The Dev.to post URL
+    - A publication status message
+    - Any metadata used (title, tags, cover image, canonical URL)
   agent: dev_poster
   expected_output_file: dev_to_post_result.md
-
-
