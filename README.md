@@ -36,6 +36,33 @@ Follow the official [CrewAI installation guide](https://docs.crewai.com/en/insta
    uv tool install crewai --upgrade
    ```
 
+## Quickstart
+1. **Install Python 3.10–3.13** and [UV](https://docs.astral.sh/uv/):
+   ```bash
+   pip install uv
+   ```
+2. **Install dependencies:**
+   ```bash
+   uv pip install -r requirements.txt
+   ```
+3. **Set your API keys** (e.g., `OPENAI_API_KEY`, `DEVTO_API_KEY`) in a `.env` file.
+4. **Run the main workflow:**
+   ```bash
+   crewai run
+   ```
+   When prompted, **enter your desired blog topic**. For example:
+   ```
+   Enter the blog topic (default: 'Agentic AI in healthcare'): AI in Healthcare
+   ```
+   **You must provide input at this step for the workflow to proceed.**
+   The workflow will then generate a blog post and publish it to Dev.to.
+
+   Or, if you prefer to run the Python entry point directly:
+   ```bash
+   python src/main.py
+   ```
+   You will also be prompted to provide a topic before the workflow runs.
+
 ## Architecture Overview
 
 ```mermaid
