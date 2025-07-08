@@ -33,8 +33,11 @@ def train():
     Train the crew for a given number of iterations.
     Usage: python main.py train <iterations> <filename>
     """
+    topic = input("Enter the blog topic: ").strip()
+    if not topic:
+        topic = "Agentic AI in healthcare"
     inputs = {
-        "topic": "AI LLMs",
+        "topic": topic,
         'current_year': str(datetime.now().year)
     }
     try:
