@@ -40,124 +40,51 @@ Follow the official [CrewAI installation guide](https://docs.crewai.com/en/insta
 
 ```mermaid
 flowchart TD
-    subgraph Crew["🤖 Crew Orchestrator"]
-        direction TB
-        Input["User Input (topic, year)"]
-        CrewTask1["Trigger Task: planner_task"]
-        CrewTask2["Trigger Task: writer_task"]
-        CrewTask3["Trigger Task: editor_task"]
-        CrewTask4["Trigger Task: post_to_dev_task"]
-        CrewTask5["Trigger Task: post_to_medium_task (Coming Soon)"]
-        CrewTask6["Trigger Task: post_to_linkedin_task (Coming Soon)"]
-        CrewTask7["Trigger Task: post_to_twitter_task (Coming Soon)"]
-    end
-    subgraph PlannerAgent["🧠 Planner Agent"]
-        PlannerLLM["LLM: Generate outline"]
-    end
-    subgraph WriterAgent["✍️ Writer Agent"]
-        WriterLLM["LLM: Write blog post"]
-    end
-    subgraph EditorAgent["📝 Editor Agent"]
-        EditorLLM["LLM: Edit & polish"]
-    end
-    subgraph DevPosterAgent["🟣 Dev Poster Agent"]
-        DevPosterLLM["LLM: Format for Dev.to"]
-        DevToPostTool["DevToPostTool: Publish to Dev.to"]
-    end
-    subgraph MediumPosterAgent["🟢 Medium Poster Agent (Coming Soon)"]
-        MediumPosterLLM["LLM: Format for Medium"]
-        MediumPostTool["MediumPostTool: Publish to Medium"]
-    end
-    subgraph LinkedInPosterAgent["🔵 LinkedIn Poster Agent (Coming Soon)"]
-        LinkedInPosterLLM["LLM: Format for LinkedIn"]
-        LinkedInPostTool["LinkedInPostTool: Publish to LinkedIn"]
-    end
-    subgraph TwitterPosterAgent["🔷 Twitter Poster Agent (Coming Soon)"]
-        TwitterPosterLLM["LLM: Format for Twitter"]
-        TwitterPostTool["TwitterPostTool: Publish to Twitter"]
-    end
-    Input --> CrewTask1
-    CrewTask1 --> PlannerAgent
-    PlannerAgent --> PlannerLLM
-    PlannerAgent --> CrewTask2
-    CrewTask2 --> WriterAgent
-    WriterAgent --> WriterLLM
-    WriterAgent --> CrewTask3
-    CrewTask3 --> EditorAgent
-    EditorAgent --> EditorLLM
-    EditorAgent --> CrewTask4
-    EditorAgent --> CrewTask5
-    EditorAgent --> CrewTask6
-    EditorAgent --> CrewTask7
-    CrewTask4 --> DevPosterAgent
-    DevPosterAgent --> DevPosterLLM
+    %% --- Style for white background and black text ---
+    classDef white fill:#fff,stroke:#222,stroke-width:2px,color:#111;
+    classDef output fill:#fff,stroke:#222,stroke-width:2px,color:#111;
+    classDef tool fill:#fff,stroke:#222,stroke-width:2px,color:#111;
+
+    %% --- Main Flow ---
+    UserInput["<b>📝 User Input</b>"]:::white
+    Orchestrator["<b>🤖 Crew Orchestrator</b>"]:::white
+    PlannerAgent["<b>🧠 Planner Agent</b><br><i>LLM: Outline</i>"]:::white
+    WriterAgent["<b>✍️ Writer Agent</b><br><i>LLM: Draft</i>"]:::white
+    EditorAgent["<b>📝 Editor Agent</b><br><i>LLM: Edit</i>"]:::white
+    DevPosterAgent["<b>🟣 Dev Poster Agent</b><br><i>LLM: Format</i>"]:::white
+    MediumPosterAgent["<b>🟢 Medium Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
+    LinkedInPosterAgent["<b>🔵 LinkedIn Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
+    TwitterPosterAgent["<b>🔷 Twitter Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
+    DevToPostTool["<b>🟣 DevToPostTool</b>"]:::tool
+    MediumPostTool["<b>🟢 MediumPostTool</b>\n<small>(Soon)</small>"]:::tool
+    LinkedInPostTool["<b>🔵 LinkedInPostTool</b>\n<small>(Soon)</small>"]:::tool
+    TwitterPostTool["<b>🔷 TwitterPostTool</b>\n<small>(Soon)</small>"]:::tool
+    Output1["<b>✅ Dev.to URL</b>"]:::output
+    Output2["<b>⏳ Medium Output</b>\n<small>(Soon)</small>"]:::output
+    Output3["<b>⏳ LinkedIn Output</b>\n<small>(Soon)</small>"]:::output
+    Output4["<b>⏳ Twitter Output</b>\n<small>(Soon)</small>"]:::output
+    BlogPost["<b>📄 blog_post.md</b>"]:::output
+
+    %% --- Top-down, straight flow ---
+    UserInput --> Orchestrator
+    Orchestrator --> PlannerAgent
+    PlannerAgent --> WriterAgent
+    WriterAgent --> EditorAgent
+    EditorAgent --> DevPosterAgent
+    EditorAgent --> MediumPosterAgent
+    EditorAgent --> LinkedInPosterAgent
+    EditorAgent --> TwitterPosterAgent
     DevPosterAgent --> DevToPostTool
-    DevPosterAgent --> Output1["✅ Dev.to URL & Status"]
-    CrewTask5 --> MediumPosterAgent
-    MediumPosterAgent --> MediumPosterLLM
+    DevToPostTool --> Output1
+    DevPosterAgent --> BlogPost
     MediumPosterAgent --> MediumPostTool
-    MediumPosterAgent --> Output2["⏳ Medium Output (Coming Soon)"]
-    CrewTask6 --> LinkedInPosterAgent
-    LinkedInPosterAgent --> LinkedInPosterLLM
+    MediumPostTool --> Output2
     LinkedInPosterAgent --> LinkedInPostTool
-    LinkedInPosterAgent --> Output3["⏳ LinkedIn Output (Coming Soon)"]
-    CrewTask7 --> TwitterPosterAgent
-    TwitterPosterAgent --> TwitterPosterLLM
+    LinkedInPostTool --> Output3
     TwitterPosterAgent --> TwitterPostTool
-    TwitterPosterAgent --> Output4["⏳ Twitter Output (Coming Soon)"]
+    TwitterPostTool --> Output4
 ```
 
-## How It Works
-1. **User provides a topic and year.**
-2. **Planner Agent** (LLM) generates a detailed content outline.
-3. **Writer Agent** (LLM) drafts a full blog post based on the outline.
-4. **Editor Agent** (LLM) polishes the draft for clarity, grammar, and structure.
-5. **Publisher Agents** use platform-specific tools to publish the final content:
-   - **Dev.to** (fully integrated)
-   - **Medium, LinkedIn, Twitter** (coming soon)
-
-## Quickstart
-1. **Install Python 3.10–3.13** and [UV](https://docs.astral.sh/uv/):
-   ```bash
-   pip install uv
-   ```
-2. **Install dependencies:**
-   ```bash
-   uv pip install -r requirements.txt
-   ```
-3. **Set your API keys** (e.g., `OPENAI_API_KEY`, `DEVTO_API_KEY`) in a `.env` file.
-4. **Run the main workflow:**
-   ```bash
-   crewai run
-   ```
-   Or, if you prefer to run the Python entry point directly:
-   ```bash
-   python src/main.py
-   ```
-   This will generate a blog post and publish it to Dev.to.
-
-## Configuration
-- **Agents:** Define roles and behaviors in `src/config/agents.yaml`.
-- **Tasks:** Define workflow steps in `src/config/tasks.yaml`.
-- **Tools:** Add or customize publishing tools in `src/tools/blog_platform/`.
-
-## Testing
-Run tests to validate agent and task logic:
-```bash
-pytest tests/
-```
-
-## Development
-For development dependencies:
-```bash
-pip install -r requirements-dev.txt
-```
-
-## Support
-For questions or feedback:
-- Email: ksatyam1038@gmail.com
-- Website: [www.satyam.my](https://www.satyam.my)
-
----
-
-InkwellAi: Automated, intelligent, and extensible blog creation for the modern web.
+<!-- LEGEND: Horizontal, below the diagram for compatibility -->
+**Legend:**  
+🧑‍💻 Agents  🛠️ Tools  📤 Outputs  🤖 Crew Orchestrator  🟢/🔵/🔷 Coming Soon  🗂️ Config  💻 Entry  🧪 Test
