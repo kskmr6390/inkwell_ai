@@ -21,11 +21,9 @@ crewai install
 ### Customizing
 
 **Add your 'OPENAI_API_KEY' into the '.env' file**
+**Add your 'DEVTO_API_KEY' into the '.env' file to enable publishing to Dev.to**
 
-- Modify 'src/inkwell_ai/config/agents.yaml' to define your agents
-- Modify 'src/inkwell_ai/config/tasks.yaml' to define your tasks
-- Modify 'src/inkwell_ai/crew.py' to add your own logic, tools and specific args
-- Modify 'src/inkwell_ai/main.py' to add custom inputs for your agents and tasks
+These API keys are required in your `.env` file to run the project and enable all features, including publishing articles to Dev.to.
 
 ## Running the Project
 
@@ -41,13 +39,27 @@ This example, unmodified, will create a 'blog_post.md' file with content about A
 
 ## Understanding Your Crew
 
-The inkwell_ai Crew is composed of three AI agents working together to create blog content:
+The inkwell_ai Crew is composed of four AI agents working together to create blog content:
 
 1. **Planner Agent**: Creates content plans and outlines for blog posts
 2. **Writer Agent**: Writes engaging and factual content based on the plan
 3. **Editor Agent**: Reviews and refines the content for quality and clarity
+4. **Dev Poster Agent**: Publishes the finalized blog post to Dev.to, handling formatting, tags, and metadata
 
 These agents collaborate on a series of tasks, defined in 'config/tasks.yaml', leveraging their collective skills to achieve complex objectives. The 'config/agents.yaml' file outlines the capabilities and configurations of each agent in your crew.
+
+## Tools
+
+Tools are modular components that extend the capabilities of your agents, allowing them to interact with external platforms or perform specialized actions. In this project, tools are used to automate publishing and content distribution tasks. You can add or customize tools in the `src/tools/` directory.
+
+### Available Tools
+- **DevToPostTool**: Publishes markdown articles to Dev.to via their API. Used by the Dev Poster agent.
+- **TwitterPostTool**: Coming soon
+- **LinkedInPostTool**: Coming soon
+- **MediumPostTool**: Coming soon
+- **MyCustomTool**: Coming soon
+
+To assign a tool to an agent, update the agent's configuration in `src/inkwell_ai/crew.py` and, if needed, in the YAML config. For example, the Dev Poster agent uses the `DevToPostTool` to automate publishing to Dev.to.
 
 ## Testing
 
