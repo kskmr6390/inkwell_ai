@@ -1,11 +1,11 @@
 # InkwellAi
 
-InkwellAi is an advanced, multi-agent AI system for automated blog content creation and publishing. It orchestrates a team of specialized AI agents—Planner, Writer, Editor, and Publisher—to generate, refine, and distribute high-quality blog posts across multiple platforms with minimal human intervention.
+InkwellAi is an advanced, multi-agent AI system for automated blog content creation and publishing. It orchestrates a team of specialized AI agents—Planner, Writer, Editor, and Publishers—to generate, refine, and distribute high-quality blog posts across multiple platforms with minimal human intervention.
 
 ## Features
 - **Automated Blog Workflow:** From topic planning to final publication, every step is handled by a dedicated AI agent.
 - **LLM-Powered Agents:** Each agent leverages a large language model (LLM) to perform its role—planning, writing, editing, or formatting content.
-- **Multi-Platform Publishing:** Instantly publish your content to Dev.to (with Medium, LinkedIn, and Twitter support coming soon).
+- **Multi-Platform Publishing:** Instantly publish your content to Dev.to and Medium (with LinkedIn and Twitter support coming soon).
 - **Configurable & Extensible:** Easily customize agents, tasks, and publishing tools via YAML and Python.
 - **Seamless Orchestration:** The Crew orchestrator manages task flow, agent assignment, and data passing internally.
 
@@ -36,6 +36,114 @@ Follow the official [CrewAI installation guide](https://docs.crewai.com/en/insta
    uv tool install crewai --upgrade
    ```
 
+## Environment Setup
+
+Create a `.env` file in the root directory with the following environment variables:
+
+```bash
+# OpenAI API Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Dev.to API Configuration
+DEVTO_API_KEY=your_devto_api_key_here
+
+# Google Credentials (for Medium OAuth authentication)
+GOOGLE_EMAIL=your_google_email@gmail.com
+GOOGLE_PASSWORD=your_google_password_here
+
+# Optional: Set specific model if needed
+# OPENAI_MODEL=gpt-4
+# OPENAI_MODEL=gpt-3.5-turbo
+```
+
+**Required API Keys:**
+- **OpenAI API Key:** Get from [OpenAI Platform](https://platform.openai.com/api-keys)
+- **Dev.to API Key:** Get from [Dev.to Settings](https://dev.to/settings/account)
+- **Google Credentials:** Your Google email and password for Medium OAuth authentication
+
+**Note:** The `.env` file is automatically ignored by git for security. Never commit your actual API keys to version control.
+
+## Architecture Overview
+
+```mermaid
+flowchart TD
+    subgraph Crew["🤖 Crew Orchestrator"]
+        direction TB
+        Input["User Input (topic, year)"]
+        CrewTask1["Trigger Task: planner_task"]
+        CrewTask2["Trigger Task: writer_task"]
+        CrewTask3["Trigger Task: editor_task"]
+        CrewTask4["Trigger Task: post_to_dev_task"]
+        CrewTask5["Trigger Task: post_to_medium_task"]
+        CrewTask6["Trigger Task: post_to_linkedin_task (Coming Soon)"]
+        CrewTask7["Trigger Task: post_to_twitter_task (Coming Soon)"]
+    end
+    subgraph PlannerAgent["🧠 Planner Agent"]
+        PlannerLLM["LLM: Generate outline"]
+    end
+    subgraph WriterAgent["✍️ Writer Agent"]
+        WriterLLM["LLM: Write blog post"]
+    end
+    subgraph EditorAgent["📝 Editor Agent"]
+        EditorLLM["LLM: Edit & polish"]
+    end
+    subgraph DevPosterAgent["🟣 Dev Poster Agent"]
+        DevPosterLLM["LLM: Format for Dev.to"]
+        DevToPostTool["DevToPostTool: Publish to Dev.to"]
+    end
+    subgraph MediumPosterAgent["🟢 Medium Poster Agent"]
+        MediumPosterLLM["LLM: Format for Medium"]
+        MediumPostTool["MediumPostTool: Publish to Medium"]
+    end
+    subgraph LinkedInPosterAgent["🔵 LinkedIn Poster Agent (Coming Soon)"]
+        LinkedInPosterLLM["LLM: Format for LinkedIn"]
+        LinkedInPostTool["LinkedInPostTool: Publish to LinkedIn"]
+    end
+    subgraph TwitterPosterAgent["🔷 Twitter Poster Agent (Coming Soon)"]
+        TwitterPosterLLM["LLM: Format for Twitter"]
+        TwitterPostTool["TwitterPostTool: Publish to Twitter"]
+    end
+    Input --> CrewTask1
+    CrewTask1 --> PlannerAgent
+    PlannerAgent --> PlannerLLM
+    PlannerAgent --> CrewTask2
+    CrewTask2 --> WriterAgent
+    WriterAgent --> WriterLLM
+    WriterAgent --> CrewTask3
+    CrewTask3 --> EditorAgent
+    EditorAgent --> EditorLLM
+    EditorAgent --> CrewTask4
+    EditorAgent --> CrewTask5
+    EditorAgent --> CrewTask6
+    EditorAgent --> CrewTask7
+    CrewTask4 --> DevPosterAgent
+    DevPosterAgent --> DevPosterLLM
+    DevPosterAgent --> DevToPostTool
+    DevPosterAgent --> Output1["✅ Dev.to URL & Status"]
+    CrewTask5 --> MediumPosterAgent
+    MediumPosterAgent --> MediumPosterLLM
+    MediumPosterAgent --> MediumPostTool
+    MediumPosterAgent --> Output2["✅ Medium URL & Status"]
+    CrewTask6 --> LinkedInPosterAgent
+    LinkedInPosterAgent --> LinkedInPosterLLM
+    LinkedInPosterAgent --> LinkedInPostTool
+    LinkedInPosterAgent --> Output3["⏳ LinkedIn Output (Coming Soon)"]
+    CrewTask7 --> TwitterPosterAgent
+    TwitterPosterAgent --> TwitterPosterLLM
+    TwitterPosterAgent --> TwitterPostTool
+    TwitterPosterAgent --> Output4["⏳ Twitter Output (Coming Soon)"]
+```
+
+## How It Works
+1. **User provides a topic and year.**
+2. **Planner Agent** (LLM) generates a detailed content outline.
+3. **Writer Agent** (LLM) drafts a full blog post based on the outline.
+4. **Editor Agent** (LLM) polishes the draft for clarity, grammar, and structure.
+5. **Publisher Agents** use platform-specific tools to publish the final content:
+   - **Dev.to** (fully integrated via API)
+   - **Medium** (fully integrated via browser automation)
+   - **LinkedIn, Twitter** (coming soon)
+
 ## Quickstart
 1. **Install Python 3.10–3.13** and [UV](https://docs.astral.sh/uv/):
    ```bash
@@ -45,73 +153,45 @@ Follow the official [CrewAI installation guide](https://docs.crewai.com/en/insta
    ```bash
    uv pip install -r requirements.txt
    ```
-3. **Set your API keys** (e.g., `OPENAI_API_KEY`, `DEVTO_API_KEY`) in a `.env` file.
+3. **Set your API keys** in a `.env` file:
+   ```bash
+   OPENAI_API_KEY=your_openai_api_key
+   DEVTO_API_KEY=your_devto_api_key
+   MEDIUM_EMAIL=your_medium_email
+   MEDIUM_PASSWORD=your_medium_password
+   ```
 4. **Run the main workflow:**
    ```bash
    crewai run
    ```
-   When prompted, **enter your desired blog topic**. For example:
-   ```
-   Enter the blog topic (default: 'Agentic AI in healthcare'): AI in Healthcare
-   ```
-   **You must provide input at this step for the workflow to proceed.**
-   The workflow will then generate a blog post and publish it to Dev.to.
-
    Or, if you prefer to run the Python entry point directly:
    ```bash
    python src/main.py
    ```
-   You will also be prompted to provide a topic before the workflow runs.
+   This will generate a blog post and publish it to both Dev.to and Medium.
 
-## Architecture Overview
+## Configuration
+- **Agents:** Define roles and behaviors in `src/config/agents.yaml`.
+- **Tasks:** Define workflow steps in `src/config/tasks.yaml`.
+- **Tools:** Add or customize publishing tools in `src/tools/blog_platform/`.
 
-```mermaid
-flowchart TD
-    %% --- Style for white background and black text ---
-    classDef white fill:#fff,stroke:#222,stroke-width:2px,color:#111;
-    classDef output fill:#fff,stroke:#222,stroke-width:2px,color:#111;
-    classDef tool fill:#fff,stroke:#222,stroke-width:2px,color:#111;
-
-    %% --- Main Flow ---
-    UserInput["<b>📝 User Input</b>"]:::white
-    Orchestrator["<b>🤖 Crew Orchestrator</b>"]:::white
-    PlannerAgent["<b>🧠 Planner Agent</b><br><i>LLM: Outline</i>"]:::white
-    WriterAgent["<b>✍️ Writer Agent</b><br><i>LLM: Draft</i>"]:::white
-    EditorAgent["<b>📝 Editor Agent</b><br><i>LLM: Edit</i>"]:::white
-    DevPosterAgent["<b>🟣 Dev Poster Agent</b><br><i>LLM: Format</i>"]:::white
-    MediumPosterAgent["<b>🟢 Medium Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
-    LinkedInPosterAgent["<b>🔵 LinkedIn Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
-    TwitterPosterAgent["<b>🔷 Twitter Poster Agent</b><br><i>LLM: Format</i>\n<small>(Soon)</small>"]:::white
-    DevToPostTool["<b>🟣 DevToPostTool</b>"]:::tool
-    MediumPostTool["<b>🟢 MediumPostTool</b>\n<small>(Soon)</small>"]:::tool
-    LinkedInPostTool["<b>🔵 LinkedInPostTool</b>\n<small>(Soon)</small>"]:::tool
-    TwitterPostTool["<b>🔷 TwitterPostTool</b>\n<small>(Soon)</small>"]:::tool
-    Output1["<b>✅ Dev.to URL</b>"]:::output
-    Output2["<b>⏳ Medium Output</b>\n<small>(Soon)</small>"]:::output
-    Output3["<b>⏳ LinkedIn Output</b>\n<small>(Soon)</small>"]:::output
-    Output4["<b>⏳ Twitter Output</b>\n<small>(Soon)</small>"]:::output
-    BlogPost["<b>📄 blog_post.md</b>"]:::output
-
-    %% --- Top-down, straight flow ---
-    UserInput --> Orchestrator
-    Orchestrator --> PlannerAgent
-    PlannerAgent --> WriterAgent
-    WriterAgent --> EditorAgent
-    EditorAgent --> DevPosterAgent
-    EditorAgent --> MediumPosterAgent
-    EditorAgent --> LinkedInPosterAgent
-    EditorAgent --> TwitterPosterAgent
-    DevPosterAgent --> DevToPostTool
-    DevToPostTool --> Output1
-    DevPosterAgent --> BlogPost
-    MediumPosterAgent --> MediumPostTool
-    MediumPostTool --> Output2
-    LinkedInPosterAgent --> LinkedInPostTool
-    LinkedInPostTool --> Output3
-    TwitterPosterAgent --> TwitterPostTool
-    TwitterPostTool --> Output4
+## Testing
+Run tests to validate agent and task logic:
+```bash
+pytest tests/
 ```
 
-<!-- LEGEND: Horizontal, below the diagram for compatibility -->
-**Legend:**  
-🧑‍💻 Agents  🛠️ Tools  📤 Outputs  🤖 Crew Orchestrator  🟢/🔵/🔷 Coming Soon  🗂️ Config  💻 Entry  🧪 Test
+## Development
+For development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+## Support
+For questions or feedback:
+- Email: ksatyam1038@gmail.com
+- Website: [www.satyam.my](https://www.satyam.my)
+
+---
+
+InkwellAi: Automated, intelligent, and extensible blog creation for the modern web.
