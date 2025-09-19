@@ -1,58 +1,79 @@
 plan_task:
   description: >
-    Analyze the blog topic and create a comprehensive content outline optimized for clarity, SEO, and reader engagement.
-    Identify the main sections and subtopics, recommend headings (H2/H3), relevant data points or trends, and table ideas
-    (e.g., '[TABLE: LLM size vs inference cost]').
-    Suggest tone (e.g., educational, conversational, thought‑leader) and include references or expert sources if applicable.
+    Analyze the topic and create a high-impact content plan. Include SEO-optimized structure, tone, data visuals, and citations.
   expected_output: >
-    A structured outline including:
-    - Section titles (H2/H3)
-    - Brief content notes per section
-    - Tone/style notes and any suggested references
+    - Blog Title
+    - One-sentence Meta Description
+    - Suggested Tags
+    - Thesis/Angle
+    - Recommended Tone
+    - Section-wise H2/H3 outline with notes per section
+    - Placeholder blocks (e.g., [TABLE: AI tools], [QUOTE: expert])
+    - Suggested CTAs
+    - Source links for references
   agent: planner
+  expected_output_file: blog_plan.md
 
 write_task:
   description: >
-    Using the planner’s outline, write a complete, insightful, and SEO‑optimized blog post.
-    The content should be factual, well‑cited, clearly structured, and include placeholders for tables only
-    (e.g., [TABLE: …]).
-    Use markdown formatting with H2/H3 headings, bullet lists, quotes, and tables.
+    Write a full-length markdown blog post from the planner’s outline. Include structure, references, and placeholder visuals.
   expected_output: >
-    A full markdown‑formatted blog post with:
-    - Engaging introduction
-    - Clear, structured sections ('##' and '###' headings)
-    - Data, examples, expert references
-    - Summary or CTA in the conclusion
+    A complete markdown blog with:
+    - Engaging opening hook (stat/quote/example)
+    - Well-structured sections with '##' and '###' headers
+    - Real data, examples, citations, and quotes
+    - Embedded placeholders ([TABLE:], [QUOTE:], [CHART:])
+    - Links to studies, tools, or datasets
+    - Closing summary and CTA
   agent: writer
   expected_output_file: blog_post.md
 
 edit_task:
   description: >
-    Refine the draft blog post for clarity, grammar, narrative flow, and structural coherence.
-    Ensure consistency in tone and formatting, finalize the markdown, and embed proper table syntax.
-    Validate data integrity and enhance scannability with headings, lists, quotes, and tables. Optimize for SEO and readability.
+    Review the draft blog, improve grammar and flow, verify citations, finalize markdown, and enhance readability.
   expected_output: >
-    A final publication‑ready blog post that:
-    - Uses clean markdown syntax
-    - Embeds tables in the correct places (no images or charts)
-    - Maintains consistent tone and structure
-    - Includes finalized H1–H3 hierarchy, metadata‑ready intro and outro
+    A refined, publication-ready markdown post:
+    - Clean grammar, formatting, and sentence structure
+    - Consistent tone and logical section flow
+    - Tables and quotes embedded in proper markdown
+    - Short paragraphs, nested bullets, quote blocks
+    - Ready for Dev.to/Markdown publishing
   agent: editor
-  expected_output_file: blog_post.md
+  expected_output_file: blog_post_final.md
 
 post_to_dev_task:
   description: >
-    Publish the final markdown blog post to Dev.to via the Dev.to API.
-    Ensure that:
-    - All markdown formatting renders correctly (including code blocks, lists, and tables)
-    - Relevant tags are included (#ai, #machinelearning, #opensource, etc.)
-    - A meta description and optional canonical URL are applied
-    - The post is validated for rendering issues and a success confirmation with URL is returned
+    Publish the final markdown blog to Dev.to. Validate rendering, attach metadata, and return confirmation.
   expected_output: >
-    A confirmation markdown file containing:
-    - The Dev.to post URL
-    - A publication status message
-    - Any metadata used (title, tags, canonical URL)
+    A response markdown file with:
+    - Publication status (success/failure)
+    - Final post title, tags, and meta description
+    - Dev.to blog URL
+    - Any errors or warnings from the API
   agent: dev_poster
-  expected_output_file: dev_to_post_result.md
+  expected_output_file: dev_post_result.md
 
+# post_to_medium_task:
+#   description: >
+#     Publish the final markdown blog to Medium using browser automation. Format content for Medium's editor and return confirmation.
+#   expected_output: >
+#     A response markdown file with:
+#     - Publication status (success/failure)
+#     - Medium post URL
+#     - Any formatting notes or warnings
+#     - Confirmation of successful publication
+#   agent: medium_poster
+#   expected_output_file: medium_post_result.md
+
+post_to_twitter_task:
+  description: >
+    Extract the Dev.to article URL from the previous task result and post an engaging tweet to promote the article on Twitter.
+  expected_output: >
+    A response markdown file with:
+    - Tweet posting status (success/failure)
+    - The actual tweet content that was posted
+    - Dev.to URL that was included in the tweet
+    - Character count and hashtags used
+    - Any errors or warnings from the Twitter API
+  agent: twitter_poster
+  expected_output_file: twitter_post_result.md

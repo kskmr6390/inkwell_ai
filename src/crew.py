@@ -3,6 +3,9 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 from src.tools.blog_platform.dev_to import DevToPostTool
+from src.tools.blog_platform.medium import MediumPostTool
+from src.tools.blog_platform.twitter import TwitterPostTool
+from src.tools.url_validator import URLValidatorTool, URLCheckerTool
 
 
 # If you want to run a snippet of code before or after the crew starts,
@@ -14,11 +17,12 @@ class InkwellAi():
     """
     InkwellAi crew for creating blog content.
     
-    This crew consists of four agents:
+    This crew consists of five agents:
     - Planner: Creates content plans and outlines
     - Writer: Writes engaging content based on the plan
     - Editor: Reviews and refines the content
     - Dev Poster: Publishes the final article to dev.to
+    - Medium Poster: Publishes the final article to Medium
     """
 
     agents: List[BaseAgent]
@@ -41,13 +45,15 @@ class InkwellAi():
     def writer(self) -> Agent:
         return Agent(
             config=self.agents_config['writer'], # type: ignore[index]
-            verbose=True
+            verbose=True,
+            tools=[URLCheckerTool()]
         )
     @agent
     def editor(self) -> Agent:
         return Agent(
             config=self.agents_config['editor'], # type: ignore[index]
-            verbose=True
+            verbose=True,
+            tools=[URLValidatorTool(), URLCheckerTool()]
         )
     @agent
     def dev_poster(self) -> Agent:
@@ -55,6 +61,22 @@ class InkwellAi():
             config=self.agents_config['dev_poster'], # type: ignore[index]
             verbose=True,
             tools=[DevToPostTool()]
+        )
+
+    # @agent
+    # def medium_poster(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['medium_poster'], # type: ignore[index]
+    #         verbose=True,
+    #         tools=[MediumPostTool()]
+    #     )
+
+    @agent
+    def twitter_poster(self) -> Agent:
+        return Agent(
+            config=self.agents_config['twitter_poster'], # type: ignore[index]
+            verbose=True,
+            tools=[TwitterPostTool()]
         )
 
     # To learn more about structured task outputs,
@@ -87,6 +109,20 @@ class InkwellAi():
             output_file='devto_post_result.md' 
         )
 
+    # @task
+    # def post_to_medium_task(self) -> Task:
+    #     return Task(
+    #         config=self.tasks_config['post_to_medium_task'], # type: ignore[index]
+    #         output_file='medium_post_result.md' 
+    #     )
+
+    @task
+    def post_to_twitter_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['post_to_twitter_task'], # type: ignore[index]
+            output_file='twitter_post_result.md' 
+        )
+
     @crew
     def crew(self) -> Crew:
         """
@@ -97,6 +133,7 @@ class InkwellAi():
         2. Writer creates content based on outline
         3. Editor reviews and refines content
         4. Dev Poster publishes the article to dev.to
+        5. Twitter Poster promotes the article on Twitter
         
         Returns:
             Configured Crew instance

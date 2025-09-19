@@ -15,22 +15,27 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 def run(topic=None):
     """
     Run the crew to create blog content about a user-specified topic.
-    If topic is not provided, prompts the user for a topic (or uses a default).
-    This will execute the planner, writer, and editor tasks sequentially.
+    Prompts the user for the blog topic and (optionally) the year.
     """
+    from datetime import datetime
+    topic = input("Enter the blog topic: ").strip()
+    if not topic:
+        print("Topic is required.")
+        return
+    year_input = input(f"Enter the year (default: {datetime.now().year}): ").strip()
+    current_year = year_input if year_input else str(datetime.now().year)
+    inputs = {
+        'topic': topic,
+        'current_year': current_year
+    }
     try:
-        if not topic:
-            # Prompt the user to enter a blog topic (example: AI in Healthcare)
-            topic = input("Enter the blog topic (default: 'Agentic AI in healthcare'): ").strip()
-            if not topic:
-                topic = "Agentic AI in healthcare"
-        inputs = {
-            'topic': topic,
-            'current_year': str(datetime.now().year)
-        }
         InkwellAi().crew().kickoff(inputs=inputs)
     except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
+        # Handle OpenAI RateLimitError or similar
+        if e.__class__.__name__ == "RateLimitError":
+            print("Error: OpenAI API rate limit exceeded. Please wait and try again later, or check your OpenAI API usage limits.")
+        else:
+            print(f"An error occurred while running the crew: {e}")
 
 
 def train():
